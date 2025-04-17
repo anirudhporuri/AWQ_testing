@@ -81,61 +81,6 @@ quant_model = AutoModelForCausalLM.from_pretrained(
 )
 quant_results = benchmark_model("Quantized (8-bit)", quant_model, tokenizer, quant_model.device, 1)  # 1 byte for INT8
 torch.cuda.reset_peak_memory_stats()
-
-# --- AWQ Benchmarking Branch ---
-
-from quantization import (
-    collect_activation_stats,
-    awq_quantize_model,
-    load_awq_model_from_state,
-    load_model  # if not already imported
-)
-
-# 1) Calibration on a handful of prompts
-cal_texts = [
-    "In a groundbreaking experiment in quantum physics,",
-    "Once upon a time in a faraway kingdom,",
-    # …add 10–20 varied calibration snippets…
-]
-print("Calibrating activations for AWQ...")
-stats = collect_activation_stats(
-    original_model, tokenizer,
-    cal_texts, original_model.device
-)
-
-# 2) Perform AWQ (4‑bit) quantization in blocks of 128×32
-print("Quantizing model with AWQ (4-bit)...")
-awq_state = awq_quantize_model(
-    original_model, stats,
-    num_bits=4,
-    block_size=(128, 32)
-)
-
-# 3) Load a fresh copy and inject the AWQ‑quantized weights
-print("Loading fresh model and applying AWQ weights...")
-tokenizer_awq, awq_model = load_model(model_id)
-awq_model = load_awq_model_from_state(awq_model, awq_state)
-
-# 4) Benchmark the AWQ‑quantized model
-awq_results = benchmark_model(
-    "Quantized (AWQ 4-bit)",
-    awq_model, tokenizer_awq,
-    awq_model.device,
-    bytes_per_param=0.5
-)
-
-# 5) Add AWQ results to your table and CSV
-table = [original_results, quant_results, awq_results]
-print("\n=== Benchmark Comparison (incl. AWQ) ===")
-print(tabulate(table, headers=headers))
-
-with open("benchmark_results.csv", "a", newline="") as f:
-    writer = csv.writer(f)
-    writer.writerow([])
-    writer.writerow(["--- AWQ 4-bit Results ---"])
-    writer.writerow(headers)
-    writer.writerow(awq_results)
-
 # ---------------------
 # Print table
 headers = ["Model", "Latency (s)", "Memory (MB)", "Param Size (MB)", "Perplexity", "Sample Output"]

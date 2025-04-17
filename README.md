@@ -1,6 +1,3 @@
-# AWQ_testing
-Trying AWQ quantization method
-
 # Quantization Benchmark Setup on Zaratan
 
 ## How to Run

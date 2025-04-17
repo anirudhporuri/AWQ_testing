@@ -10,7 +10,7 @@
 #SBATCH --error=quant_error.txt
 #SBATCH --cpus-per-task=4
 
-#module load cuda/11.7
+module load cuda/11.7
 source activate llama_quant
 export TOKENIZERS_PARALLELISM=false
 python3 quantization_exp.py
