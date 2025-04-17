@@ -5,10 +5,18 @@ import psutil
 import csv
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 from tabulate import tabulate
+from huggingface_hub import snapshot_download
+
+
+local_dir = snapshot_download(
+    repo_id="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+    cache_dir="./TinyLlama-1.1B-Chat-v1.0"
+)
 
 # Set environment
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
-model_id = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+model_id = local_dir
+#model_id = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
 #model_id = "meta-llama/Llama-2-7b-hf"
 #prompt = "Once upon a time in a faraway kingdom,"
 prompt = "In a groundbreaking experiment in quantum physics,"
