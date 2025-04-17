@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/scratch/zt1/project/cmsc828/user/aporuri/AWQ_testing/quantization_exp.py", line 62, in <module>
+    original_model = AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=torch.float16, device_map="auto", trust_remote_code=True, revision="main")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aporuri/bnb_quant/lib/python3.11/site-packages/transformers/models/auto/auto_factory.py", line 571, in from_pretrained
+    return model_class.from_pretrained(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aporuri/bnb_quant/lib/python3.11/site-packages/transformers/modeling_utils.py", line 279, in _wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aporuri/bnb_quant/lib/python3.11/site-packages/transformers/modeling_utils.py", line 4260, in from_pretrained
+    checkpoint_files, sharded_metadata = _get_resolved_checkpoint_files(
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/aporuri/bnb_quant/lib/python3.11/site-packages/transformers/modeling_utils.py", line 1100, in _get_resolved_checkpoint_files
+    raise EnvironmentError(
+OSError: TinyLlama/TinyLlama-1.1B-Chat-v1.0 does not appear to have a file named pytorch_model.bin, model.safetensors, tf_model.h5, model.ckpt or flax_model.msgpack.
